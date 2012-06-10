@@ -1,0 +1,15 @@
+<h1>User#new</h1>
+<p>Find me in app/views/user/new.html.erb</p>
+
+<%= form_for @user do |f| %>
+	<%= f.label :email %>
+	<%= f.text_field :email %>	
+	
+	<%= f.label :password %>
+	<%= f.text_field :password %>
+	
+	<%= f.label :password_confirmation %>
+	<%= f.text_field :password_confirmation %>
+	
+	<%= f.submit %>
+<% end %>
