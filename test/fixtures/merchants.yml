@@ -3,7 +3,9 @@
 one:
   name: MyString
   rating: 1
+  seller_id: 1
 
 two:
   name: MyString
   rating: 1
+  seller_id: 1

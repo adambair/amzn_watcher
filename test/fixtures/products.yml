@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  price: 1.5
+  shipping_price: 1.5
+  asin: 1.5
+  condition: MyString
+
+two:
+  name: MyString
+  price: 1.5
+  shipping_price: 1.5
+  asin: 1.5
+  condition: MyString
