@@ -5,6 +5,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'jquery-rails'
 gem 'json'
 gem 'nokogiri'
+gem 'httparty'
 
 group :development, :test do
   gem 'sqlite3'
