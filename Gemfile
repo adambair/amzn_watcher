@@ -6,6 +6,7 @@ gem 'jquery-rails'
 gem 'json'
 gem 'nokogiri'
 gem 'httparty'
+gem 'fastercsv'
 
 group :development, :test do
   gem 'sqlite3'

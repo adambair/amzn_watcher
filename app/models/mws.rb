@@ -2,6 +2,7 @@ require "openssl"
 require "base64"
 require 'cgi'
 require 'httparty'
+require 'csv'
 
 class Mws
   
@@ -11,7 +12,7 @@ class Mws
     @SECRET = "7dUa9rZp4fTOCk/g1eYqKdzPN40AEr/r/mKp4P6Y"
   end
   
-  def GetReport(report_id)
+  def GetSellerListings(report_id)
     timestamp = CGI.escape(Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ"))
     
     request   = request_params("GetReport",report_id, timestamp)
@@ -21,8 +22,14 @@ class Mws
     url = generate_url(signed_params)
 
     response = execute(url)
-    response.body
+    
+    CSV.foreach(response.body,{:row_sep => "\t"}).each do |field|
+      #puts field.split(/\t/)
+    end
+        
   end
+  
+
  
   private
   
