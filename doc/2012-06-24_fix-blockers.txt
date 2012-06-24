@@ -1,0 +1,8 @@
+In console do this:
+
+m = Mws.new
+m.get_seller_listings
+m.parse_response
+m.results
+
+That should get you rolling :)

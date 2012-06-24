@@ -5,6 +5,7 @@ require 'httparty'
 require 'csv'
 
 class Mws
+  attr_accessor :response, :results
   
   def initialize
     @SELLER_ID = "A3RJNXUWUB0XCQ"
@@ -12,7 +13,12 @@ class Mws
     @SECRET = "7dUa9rZp4fTOCk/g1eYqKdzPN40AEr/r/mKp4P6Y"
   end
   
-  def GetSellerListings(report_id)
+  # def GetSellerListings(report_id)
+  #
+  # NOTE AB: methods should be snake case
+  # Added a default report_id for testing/laziness ;)
+  # Should be removed when we're finished hacking around
+  def get_seller_listings(report_id='6736979923')
     timestamp = CGI.escape(Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ"))
     
     request   = request_params("GetReport",report_id, timestamp)
@@ -21,15 +27,36 @@ class Mws
     signed_params = request_params("GetReport",report_id, timestamp, signature) #"6736979923"
     url = generate_url(signed_params)
 
-    response = execute(url)
+    @response = execute(url)
     
-    CSV.foreach(response.body,{:row_sep => "\t"}).each do |field|
-      #puts field.split(/\t/)
-    end
-        
+    # NOTE AB: This is causing Errno::ENAMETOOLONG: File name too long
+    # removing for now.
+    #
+    # CSV.foreach(response.body,{:row_sep => "\t"}).each do |field|
+    #   puts field.split(/\t/)
+    # end
   end
-  
 
+  # NOTE AB: Parsed manually, because, why not ;)
+  def parse_response
+    data    = @response.split(/\t/) # split into an array on tabs /\t/
+    headers = data.slice!(0..25) # capture headers, remove from data
+    @results = [] # initialize results for availability in loop
+
+    # Iterate over data each while grouping by 25 (number of headers)
+    data.each_slice(25) do |row|
+      parsed_row = {}
+      # Since the 'row' is an array of 25 and we have the headers... let's 
+      # turn it into a hash for easy of reteival
+      row.each_with_index do |col, index|
+        parsed_row[headers[index]] = col
+      end
+      # Add to results that will persist beyone the scope of the loop.
+      @results << parsed_row
+    end
+
+    @results # We could omit this but I like the explict return in this case.
+  end
  
   private
   
